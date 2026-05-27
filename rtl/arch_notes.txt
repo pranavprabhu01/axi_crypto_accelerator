@@ -1,0 +1,9 @@
+1. Input is Cipher text of 128 bit and key of 128 bit.
+2. Arrange them into 4x4 matrix and perform xor of corresponding elements.
+3.
+Four modules:
+1. SubBytes
+2.ShiftRows
+3. MixColumns
+4.AddRoundKey
+
