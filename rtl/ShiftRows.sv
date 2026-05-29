@@ -4,7 +4,22 @@
 //Email:pp7437@rit.edu;prnv.prbh@gmail.com
 
 
-module ShiftRows(input logic [7:0]i_matrix[0:3][0:3],output logic[7:0] o_shifted [0:3][0:3])
+module ShiftRows(input logic i_data[127:0],output logic o_data[127:0]);
+
+	logic [7:0] i_matrix[0:3][0:3];
+	logic [7:0] o_shifted [0:3][0:3];
+//variables to iterate through row and column
+	int r;
+	int c;
+//Unpack the input matrix
+	always_comb begin
+        for (int c = 0; c < 4; c = c + 1) begin
+            for (int r = 0; r < 4; r = r + 1) begin
+                i_matrix[r][c] = i_data[((c * 4) + r) * 8 +: 8];
+            end
+        end
+    end
+
 
 //Assigning First Row for shift
 	assign o_shifted[0][0] = i_matrix[0][0];
@@ -29,4 +44,12 @@ module ShiftRows(input logic [7:0]i_matrix[0:3][0:3],output logic[7:0] o_shifted
 	assign o_shifted[3][1] = i_matrix[3][2];
 	assign o_shifted[3][2] = i_matrix[3][3];
 	assign o_shifted[3][3] = i_matrix[3][0];
+//Packing into output matrix
+always_comb begin
+        for (int c = 0; c < 4; c = c + 1) begin
+            for (int r = 0; r < 4; r = r + 1) begin
+                o_data[((c * 4) + r) * 8 +: 8] = o_shifted[r][c];
+            end
+        end
+    end
 endmodule

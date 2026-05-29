@@ -2,7 +2,7 @@
 #Author:Pranav Prabhu
 
 #read SV file
-read_verilog -vs ShiftRows.sv
+read_verilog -vs /foss/designs/rtl/ShiftRows.sv
 
 #heirarchy
 hierarchy -check -top ShiftRows
