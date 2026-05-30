@@ -3,8 +3,9 @@
 //Author:Pranav Prabhu
 //Email:pp7437@rit.edu;prnv.prbh@gmail.com
 
+`default_nettype none
 
-module ShiftRows(input logic i_data[127:0],output logic o_data[127:0]);
+module ShiftRows(input logic [127:0] i_data,output logic[127:0] o_data);
 
 	logic [7:0] i_matrix[0:3][0:3];
 	logic [7:0] o_shifted [0:3][0:3];
