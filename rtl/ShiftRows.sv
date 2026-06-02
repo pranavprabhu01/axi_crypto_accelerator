@@ -22,7 +22,7 @@ module ShiftRows(input logic [127:0] i_data,output logic[127:0] o_data);
     end
 
 
-//Assigning First Row for shift
+//Assigning First Row for shift.no change
 	assign o_shifted[0][0] = i_matrix[0][0];
         assign o_shifted[0][1] = i_matrix[0][1];
 	assign o_shifted[0][2] = i_matrix[0][2];
@@ -35,16 +35,16 @@ module ShiftRows(input logic [127:0] i_data,output logic[127:0] o_data);
 	assign o_shifted[1][3] = i_matrix[1][0];
 
 //Assigning Third Row for shift
-	assign o_shifted[2][0] = i_matrix[2][1];
-	assign o_shifted[2][1] = i_matrix[2][2];
-	assign o_shifted[2][2] = i_matrix[2][3];
-	assign o_shifted[2][3] = i_matrix[2][0];
+	assign o_shifted[2][0] = i_matrix[2][2];
+	assign o_shifted[2][1] = i_matrix[2][3];
+	assign o_shifted[2][2] = i_matrix[2][0];
+	assign o_shifted[2][3] = i_matrix[2][1];
 
 //Assigning Fourth Row for shift
-	assign o_shifted[3][0] = i_matrix[3][1];
-	assign o_shifted[3][1] = i_matrix[3][2];
-	assign o_shifted[3][2] = i_matrix[3][3];
-	assign o_shifted[3][3] = i_matrix[3][0];
+	assign o_shifted[3][0] = i_matrix[3][3];
+	assign o_shifted[3][1] = i_matrix[3][0];
+	assign o_shifted[3][2] = i_matrix[3][1];
+	assign o_shifted[3][3] = i_matrix[3][2];
 //Packing into output matrix
 always_comb begin
         for (int c = 0; c < 4; c = c + 1) begin
