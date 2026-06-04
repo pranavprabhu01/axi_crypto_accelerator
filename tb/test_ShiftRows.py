@@ -10,7 +10,7 @@ async def shift_row_test(dut):
     #Test vector
     test_vector="00112233445566778899aabbccddeeff"
     test_vector=test_vector.lower()
-    i_matrix=[[0,0,0],[0,0,0],[0,0,0],[0,0,0]]
+    i_matrix=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
     #Byte list
     byte_list=[]
     for i in range(0,32,2):
@@ -19,7 +19,7 @@ async def shift_row_test(dut):
     for col in range(4):
         for row in range(4):
             i_matrix[row][col]=byte_list[col*4+row]
-    i_comparemat=[[0,0,0],[0,0,0],[0,0,0],[0,0,0]]
+    i_comparemat=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
     
     #Assigning matrix values row 1
     i_comparemat[0][0]=i_matrix[0][0];
@@ -45,11 +45,15 @@ async def shift_row_test(dut):
     i_comparemat[3][2]=i_matrix[3][1];
     i_comparemat[3][3]=i_matrix[3][2];
     
-    expected_byteop=[];
+    expected_byteop=[0]*16;
     #packing into bytelist
     for col in range(4):
         for row in range(4):
             expected_byteop[col*4+row]=i_comparemat[row][col]
+    
+    expected = 0
+    for b in expected_byteop:
+    	expected = (expected<<8)|b
     
     
     #Stimulus to DUT
@@ -60,7 +64,10 @@ async def shift_row_test(dut):
     
     rcvd_op = int(dut.o_data.value)
     
-    assert rcvd_op == expected_byteop
+    assert rcvd_op == expected,\
+    	f"Failed for test vector ={test_vector}:Expected {hex(expected)},got{hex(expected)}"
+    dut._log.info(f"Passed for test vector ={test_vector}:Expected {hex(expected)},got{hex(expected)}")
+    			
     
     
 
