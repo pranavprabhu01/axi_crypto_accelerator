@@ -6,6 +6,8 @@
 `default_nettype none
 
 
-module AddRoundKey(input logic [127:0] i_data,output logic [127:0] o_data)
+module AddRoundKey(input logic [127:0] i_data,input logic [127:0] i_roundkey,output logic [127:0] o_data)
+
+	//Perfoming bitwise XOR
 
 endmodule
