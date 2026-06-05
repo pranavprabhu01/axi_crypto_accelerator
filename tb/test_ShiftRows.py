@@ -16,6 +16,8 @@ async def shift_row_test(dut):
     for i in range(0,32,2):
         byte=test_vector[i:i+2]
         byte_list.append(int(byte,16))
+
+    byte_list = list(reversed(byte_list))
     for col in range(4):
         for row in range(4):
             i_matrix[row][col]=byte_list[col*4+row]
@@ -52,7 +54,7 @@ async def shift_row_test(dut):
             expected_byteop[col*4+row]=i_comparemat[row][col]
     
     expected = 0
-    for b in expected_byteop:
+    for b in reversed(expected_byteop):
     	expected = (expected<<8)|b
     
     
@@ -65,8 +67,8 @@ async def shift_row_test(dut):
     rcvd_op = int(dut.o_data.value)
     
     assert rcvd_op == expected,\
-    	f"Failed for test vector ={test_vector}:Expected {hex(expected)},got{hex(expected)}"
-    dut._log.info(f"Passed for test vector ={test_vector}:Expected {hex(expected)},got{hex(expected)}")
+    	f"Failed for test vector ={test_vector}:Expected {hex(expected)},got{hex(rcvd_op)}"
+    dut._log.info(f"Passed for test vector ={test_vector}:Expected {hex(expected)},got{hex(rcvd_op)}")
     			
     
     
