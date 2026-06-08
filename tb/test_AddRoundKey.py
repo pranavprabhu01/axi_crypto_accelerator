@@ -8,19 +8,18 @@ from cocotb.triggers import Timer
 @cocotb.test()
 async def addroundkey_test(dut):
     #Test Vector
-    test_vector_i_data =""
-    test_vector_roundkey = ""
-    
-    test_o_data =[0]*16 
-    #computing xor
-    test_o_data = test_vector_i_data ^ test_vector_roundkey
+    test_vector_i_data ="011"
+    test_vector_roundkey = "59"
+     
+    #computing xor;converting to hex
+    test_o_data = int(test_vector_i_data,16) ^int(test_vector_roundkey,16)
 
     #Stimulus to DUT
     dut.i_data.value = int(test_vector_i_data,16);
     dut.i_roundkey.value = int(test_vector_roundkey,16);
 
     #wait for 1ns
-    await Timer(1,units="ns")
+    await Timer(1,unit="ns")
 
     rcvd_op=int(dut.o_data.value)
 
