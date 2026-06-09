@@ -1,5 +1,6 @@
 #Makefile for cocotb
 
+
 #Simulator Settings
 SIM?= icarus
 TOPLEVEL_LANG ?= verilog
