@@ -24,4 +24,26 @@ module SubBytes(input logic [127:0]i_data,output logic [127:0]o_data);
         '{ 8'he1, 8'hf8, 8'h98, 8'h11, 8'h69, 8'hd9, 8'u8e, 8'h94, 8'h9b, 8'h1e, 8'h87, 8'he9, 8'hce, 8'h55, 8'h28, 8'hdf }, // Row E
         '{ 8'h8c, 8'ha1, 8'h89, 8'h0d, 8'hbf, 8'he6, 8'h42, 8'h68, 8'h41, 8'h99, 8'h2d, 8'h0f, 8'hb0, 8'h54, 8'hbb, 8'h16 }  // Row F
 	};
+
+	//row and column index
+	int r;
+	int c;
+	//Row and Column interator variable
+	int i;
+	int j;
+
+	@always_comb
+		begin
+			for(i=0;i<4;i++) begin
+				for(j=0;j<4;j++) begin
+					//Finding Row and Column Index
+					r = (i_data[i][j])%16;
+					c = (i_data[i][j])%16;
+					
+					//Substituting values from S-Box
+					//Memory LUT
+
+				end
+			end
+		end
 endmodule
