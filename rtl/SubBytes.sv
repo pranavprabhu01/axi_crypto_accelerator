@@ -40,7 +40,7 @@ module SubBytes(input logic [127:0]i_data,output logic [127:0]o_data);
 					//Finding Row and Column Index
 					r = (i_data[i][j])%16;
 					q = (i_data[i][j])/16;
-					c = (i_data[i][j])%16;
+					c = (q)%16;
 					
 					//Substituting values from S-Box
 					//Memory LUT
