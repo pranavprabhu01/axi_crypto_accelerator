@@ -12,5 +12,16 @@ module MixColumns(input logic [127:0]i_data,output logic [127:0]o_data);
 		'{8'h01,8'h01,8'h02,8'h03},	//Row 2
 		'{8'h03,8'h01,8'h01,8'h02}	//Row 3
 		};
+		//variables to iterate through row and column
+	int r;
+	int c;
+	//Unpack the input matrix
+	always_comb begin
+        for ( c = 0; c < 4; c = c + 1) begin
+            for ( r = 0; r < 4; r = r + 1) begin
+                i_matrix[r][c] = i_data[((c * 4) + r) * 8 +: 8];
+            end
+        end
+    end
 
 endmodule
