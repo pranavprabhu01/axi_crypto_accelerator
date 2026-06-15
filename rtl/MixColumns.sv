@@ -3,7 +3,11 @@
 //Email:pp7437@rit.edu;prnv.prbh@gmail.com
 
 module MixColumns(input logic [127:0]i_data,output logic [127:0]o_data);
-
+	
+	//Declaring intermediate logic
+	logic [7:0] i_matrix[0:3][0:3];
+	logic [7:0] o_result [0:3][0:3];
+	
 	//LUT of constant matrix
 	reg [8:0]aes_matrix[3:0][3:0] = '{
 		//Column:0	1	2	3
@@ -23,5 +27,24 @@ module MixColumns(input logic [127:0]i_data,output logic [127:0]o_data);
             end
         end
     end
+
+	//XOR
+	always_comb begin
+	for(r = 0; r < 4;r = r + 1)begin
+		for(c = 0; c < 4;c = c + 1)begin
+			 o_result [c][r] = aes_matrix[r][c]^i_matrix[c][r];
+		end
+		
+	end
+	end
+	
+	//Packing into matrix
+	always_comb begin
+        for ( c = 0; c < 4; c = c + 1) begin
+            for ( r = 0; r < 4; r = r + 1) begin
+                o_data[((c * 4) + r) * 8 +: 8] = o_result[r][c];
+            end
+        end
+    end	
 
 endmodule
