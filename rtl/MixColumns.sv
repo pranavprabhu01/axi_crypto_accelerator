@@ -28,7 +28,7 @@ module MixColumns(input logic [127:0]i_data,output logic [127:0]o_data);
         end
     end
 
-	//XOR
+	//GF multiplication. need to make change here
 	always_comb begin
 	for(r = 0; r < 4;r = r + 1)begin
 		for(c = 0; c < 4;c = c + 1)begin
