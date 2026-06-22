@@ -16,17 +16,14 @@ module GFM (input [7:0] i_data_a,input [7:0] i_data_b, output [7:0] o_data);
 	//Logic: loop through i_data_b; check bit;if its set left shift	
 	for(i = 0;i < 8;i = i+1) begin
 		if(i_data_b[i] == 1'b1)begin
-			if(i_data_a[7]==1'b1) begin
+			if(intr_data[7]==1'b1) begin
 				intr_data = (intr_data<<1)^(8'h1B); 
 			end
 			else begin
 				intr_data = (intr_data<<1);
 			end
 		end
-		else begin
-			//Do Nothing
-			continue;
-		end
+		
 	end
 end
 
