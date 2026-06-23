@@ -16,9 +16,12 @@ module MixColumns(input logic [127:0]i_data,output logic [127:0]o_data);
 		'{8'h01,8'h01,8'h02,8'h03},	//Row 2
 		'{8'h03,8'h01,8'h01,8'h02}	//Row 3
 		};
-		//variables to iterate through row and column
+	//variables to iterate through row and column
 	int r;
 	int c;
+
+	//Variable for replicating hardware units
+	genvar row,col,k;
 	//Unpack the input matrix
 	always_comb begin
         for ( c = 0; c < 4; c = c + 1) begin
@@ -29,14 +32,15 @@ module MixColumns(input logic [127:0]i_data,output logic [127:0]o_data);
     end
 
 	//GF multiplication.
-	always_comb begin
-	for(r = 0; r < 4;r = r + 1)begin
-		for(c = 0; c < 4;c = c + 1)begin
-			  GFM(.i_data_a(aes_matrix[r][c]),.i_data_b(i_matrix[c][r]),.o_data(o_result[c][r]));
+	generate
+	for(row = 0; row < 4;row = row + 1)begin:gen_row
+		for(col = 0; col < 4;col = col + 1)begin:gen_col
+			for(k = 0;k < 4;k = k + 1)begin:gen_k
+			  GFM gfm_inst0(.i_data_a(aes_matrix[r][c]),.i_data_b(i_matrix[c][r]),.o_data(o_result[c][r]));
 		end
-		
 	end
 	end
+	endgenerate
 	
 	//Packing into matrix
 	always_comb begin
