@@ -6,7 +6,12 @@ module MixColumns(input logic [127:0]i_data,output logic [127:0]o_data);
 	
 	//Declaring intermediate logic
 	logic [7:0] i_matrix[0:3][0:3];
+
+	//To get result
 	logic [7:0] o_result [0:3][0:3];
+
+	//To hold products
+	logic [7:0] product [0:3][0:3][0:3];
 	
 	//LUT of constant matrix
 	reg [8:0]aes_matrix[3:0][3:0] = '{
@@ -36,11 +41,20 @@ module MixColumns(input logic [127:0]i_data,output logic [127:0]o_data);
 	for(row = 0; row < 4;row = row + 1)begin:gen_row
 		for(col = 0; col < 4;col = col + 1)begin:gen_col
 			for(k = 0;k < 4;k = k + 1)begin:gen_k
-			  GFM gfm_inst0(.i_data_a(aes_matrix[r][c]),.i_data_b(i_matrix[c][r]),.o_data(o_result[c][r]));
+			  GFM gfm_inst0(.i_data_a(aes_matrix[row][k]),.i_data_b(i_matrix[k][col]),.o_data(product[row][col][k]));
 		end
 	end
 	end
 	endgenerate
+
+	//Accumalation of products
+	always_comb begin
+		for(r = 0;r < 4;r = r + 1) begin
+			for(c = 0;c < 4;c = c + 1) begin
+                         o_result[r][c] = product[r][c][0]^product[r][c][1]^product[r][c][2]^product[r][c][3];
+			end
+		end
+	end
 	
 	//Packing into matrix
 	always_comb begin
