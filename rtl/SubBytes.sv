@@ -28,7 +28,7 @@ module SubBytes(input logic [127:0]i_data,output logic [127:0]o_data);
 	//row and column index
 	int r;
 	int c;
-	int q;
+	
 	//Row and Column interator variable
 	int i;
 	int j;
@@ -38,9 +38,8 @@ module SubBytes(input logic [127:0]i_data,output logic [127:0]o_data);
 			for(i=0;i<4;i++) begin
 				for(j=0;j<4;j++) begin
 					//Finding Row and Column Index
-					r = (i_data[i][j])%16;
-					q = (i_data[i][j])/16;
-					c = (q)%16;
+					r = (i_data[i][j])&0x0F;
+					c = (i_data[i][j])&0XF0;
 					
 					//Substituting values from S-Box
 					//Memory LUT
