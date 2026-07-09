@@ -61,6 +61,8 @@ async def subbytes_test(dut):
     dut._log.info(f"Actual DUT Op: {hex(actual_op_int)}")
 
     #Asserting
+    assert actual_op_int == golden_op_int,\
+            f"SubBytes Verification Failed {hex(golden_op_int)},but got {hex(actual_op_int)}"
 
 
 

@@ -29,23 +29,36 @@ module SubBytes(input logic [127:0]i_data,output logic [127:0]o_data);
 	int r;
 	int c;
 	
+	logic [7:0] i_matrix[0:3][0:3];
+	
 	//Row and Column interator variable
 	int i;
 	int j;
+	
+	//Unpack the input matrix
+	always_comb begin
+	//Init
+	o_data =128'b0;
+	i_matrix = '{default:8'b0};
+        for ( c = 0; c < 4; c = c + 1) begin
+            for ( r = 0; r < 4; r = r + 1) begin
+                i_matrix[r][c] = i_data[((c * 4) + r) * 8 +: 8];
+            end
+        end
+    end
 
-	always_comb
-		begin
-			for(i=0;i<4;i++) begin
-				for(j=0;j<4;j++) begin
-					//Finding Row and Column Index
-					r = (i_data[i][j])&0x0F;
-					c = (i_data[i][j])&0XF0;
+	for(i=0;i<4;i++) begin
+		for(j=0;j<4;j++) begin
+				//Finding Row and Column Index
+					logic [3:0] sbox_r;
+					logic [3:0] sbox_c;
+					sbox_r = i_matrix[i][j][7:4];
+					sbox_c = i_matrix[i][j][3:0];
 					
 					//Substituting values from S-Box
 					//Memory LUT
-					o_data[((i*4)+j)*8+:8] = s_boxlut[r][c];
+					o_data[((i*4)+j)*8+:8] = s_boxlut[sbox_r][sbox_c];
 
 				end
 			end
-		end
 endmodule
