@@ -15,7 +15,7 @@ async def subbytes_test(dut):
     #Feeding input to the DUT
     dut.i_data.value = test_vector
 
-    test_vector_arr =[int(test_vector[i:i+2],16) for(i in range(,len(test_vector,2)]
+    test_vector_arr =[int(test_vector[i:i+2],16) for i in range(0,len(test_vector),2)]
 
     #Expected Ouput
     exp_o_data = [[0]*16]
@@ -42,15 +42,15 @@ async def subbytes_test(dut):
 
      #Loop to lookup the value
      for i in range(0,len(test_vector_arr)):
-        row = test_vector_arr [i]&0x0f
-        col = test_vector_arr [i]&0xf0
+        col = test_vector_arr [i]&0x0f
+        row = (test_vector_arr [i]&0xf0)>>4
         exp_o_data [i] = AES_SBox [row][col]
 
     await Timer (1,units ="ns")
     
     golden_op_int = 0
     for i in range(len(exp_o_data)):
-        golden_op_int |=(exp_o_data[i]<<(i*8))
+        golden_op_int |=(exp_o_data[i]<<((15-i)*8))
 
     #Reading DUT OP                                                 
     actual_op_int = dut.o_data.value.integer
