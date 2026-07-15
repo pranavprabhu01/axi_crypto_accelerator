@@ -18,7 +18,7 @@ async def subbytes_test(dut):
     test_vector_arr =[int(test_vector_str[i:i+2],16) for i in range(0,len(test_vector_str),2)]
 
     #Expected Ouput
-    exp_o_data = [[0]*16]
+    exp_o_data = [0]*16
 
     #AES Lookup
     AES_SBox= [
