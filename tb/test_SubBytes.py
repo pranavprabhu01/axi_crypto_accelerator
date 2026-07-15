@@ -1,4 +1,4 @@
-Description: Testbench to test SubBytes module using CoCoTB.
+#Description: Testbench to test SubBytes module using CoCoTB.
 #Author: Pranav Prabhu
 #Email:pp7437@rit.edu;prnv.prbh@gmail.com
 
@@ -8,14 +8,14 @@ from cocotb.triggers import Timer
 @cocotb.test()
 async def subbytes_test(dut):
     #Test Vector
-    test_vector = "00112233445566778899aabbccddeeff"
+    test_vector_str = "00112233445566778899aabbccddeeff"
     #Converting to base 16
-    test_vector = int(test_vector,16)
+    test_vector = int(test_vector_str,16)
 
     #Feeding input to the DUT
     dut.i_data.value = test_vector
 
-    test_vector_arr =[int(test_vector[i:i+2],16) for i in range(0,len(test_vector),2)]
+    test_vector_arr =[int(test_vector_str[i:i+2],16) for i in range(0,len(test_vector_str),2)]
 
     #Expected Ouput
     exp_o_data = [[0]*16]
@@ -38,13 +38,16 @@ async def subbytes_test(dut):
     [0x70, 0x3e, 0xb5, 0x66, 0x48, 0x03, 0xf6, 0x0e, 0x61, 0x35, 0x57, 0xb9, 0x86, 0xc1, 0x1d, 0x9e],
     [0xe1, 0xf8, 0x98, 0x11, 0x69, 0xd9, 0x8e, 0x94, 0x9b, 0x1e, 0x87, 0xe9, 0xce, 0x55, 0x28, 0xdf],
     [0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68, 0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16]
-]
+    ]
 
      #Loop to lookup the value
-     for i in range(0,len(test_vector_arr)):
-        col = test_vector_arr [i]&0x0f
-        row = (test_vector_arr [i]&0xf0)>>4
-        exp_o_data [i] = AES_SBox [row][col]
+    for i in range(0,len(test_vector_arr)):
+         r = i % 4
+         c = i // 4
+         col_major_idx = (c*4)+r
+         col = test_vector_arr [i]&0x0f
+         row = (test_vector_arr [i]&0xf0)>>4
+         exp_o_data [col_major_idx] = AES_SBox [row][col]
 
     await Timer (1,units ="ns")
     
