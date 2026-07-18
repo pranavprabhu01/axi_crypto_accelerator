@@ -23,7 +23,29 @@ def gfm_reference(a,b):
 
 @cocotb.test()
 async def GFM_test(dut):
-    #test vector
-    test_vector_a =""
-    test_vector_b =""
+    """Exhaustive Verification"""
+    
+    dut._log.info("Starting GFM Module Verification")
+
+    for a in range(256):
+        for b in range(256):
+            #input vectors
+            dut.i_data_a.value = a
+            dut.i_data_b.value = b
+            #Timer wait for 1ns
+            await Timer(1,units="ns")
+            
+            expected = gfm_reference(a,b)
+            actual = dut.o_data.value.integer
+
+            #Assertion
+            assert actual == expected,(
+                    f"Mismatch for {hex(a)} * {hex(b)}:"
+                    f"Expected {hex(expected)},got{hex(actual)}"
+                    )
+
+
+    dut._log.info("Successfully passed 65,536 test vectors")
+
+
 
