@@ -4,11 +4,11 @@
 #Simulator Settings
 SIM?= icarus
 TOPLEVEL_LANG ?= verilog
-VERILOG_SOURCES +=$(PWD)/rtl/SubBytes.sv
+VERILOG_SOURCES +=$(PWD)/rtl/GFM.sv
 
-TOPLEVEL = SubBytes
+TOPLEVEL = GFM
 
-MODULE = test_SubBytes
+MODULE = test_GFM
 export PYTHONPATH :=$(PWD)/tb
 
 include $(shell cocotb-config --makefiles)/Makefile.sim
