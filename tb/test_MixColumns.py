@@ -34,6 +34,27 @@ def mix_columns_reference(input_128bit):
 	"""
 	computing mixcolumn transformation matrix
 	"""
-	state =[]
+	#unpack state matrix
+	state =[[0]*4 for _ in range(4)]
+	for c in range(4):
+		for r in range(4):
+			shift_amt = ((c*4)+r)*8
+			state[r][c] = (input_128bit >> shift_amt) & 0xFF
+	#perform GF multiplication op
+	res_state = [[0]*4 for _ in range(4)]
+	for c in range(4):
+		for r in range(4):
+			val = 0
+			for k in range(4):
+				val ^= gfm_reference(AES_MATRIX[r][k],state[k][c])
+			res_state[r][c] = val
+	
+	output_128bit = 0
+	for c in range(4):
+		for r in range(4):
+			shift_amt = ((c*4)+r)*8
+			output_128bit |=(res_state[r][c]<<shift_amt)
+	
+	return output_128bit
 @cocotb.test()
 async def mixcolumns_test(dut):
