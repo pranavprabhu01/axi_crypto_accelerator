@@ -58,3 +58,37 @@ def mix_columns_reference(input_128bit):
 	return output_128bit
 @cocotb.test()
 async def mixcolumns_test(dut):
+	"""Test for MixColumns Module"""
+	dut._log.info("Starting MixColumn Verification")
+	#input test vectors for dut
+	test_vectors = [
+	0x455313DB455313DB455313DB455313DB,
+	0x00000000000000000000000000000000,
+	0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+	]
+	
+	#128 bit test
+	for _ in range(20):
+		test_vectors.append(random.getrandbits(128))
+	
+	for idx,test_val in enumerate(test_vectors):
+		#feed input
+		dut.i_data.value = test_val
+		
+		#Delay
+		await Timer(1,units="ns") 
+		
+		#computing reference
+		expected = mix_columns_reference(test_val)
+		actual = dut.o_data.value.integer
+		
+		#compare
+		assert actual == expected, (
+			f"Test Case {idx} Failed!\n"
+			f"Input: {hex(test_val)}\n"
+			f"Expected: {hex(expected)\n"
+			f"Actual: {hex(actual)}"
+			)
+		
+		dut._log.info("MixColumn Verification Passed")
+	
