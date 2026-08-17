@@ -14,14 +14,14 @@ module MixColumns(input logic [127:0]i_data,output logic [127:0]o_data);
 	logic [7:0] product [0:3][0:3][0:3];
 	
 	//LUT of constant matrix
-	localparam logic [7:0]aes_matrix[3:0][3:0] = '{
-		//Column:0	1	2	3
-		'{8'h02,8'h03,8'h01,8'h01},	//Row 0
-		'{8'h01,8'h02,8'h03,8'h01},	//Row 1
-		'{8'h01,8'h01,8'h02,8'h03},	//Row 2
-		'{8'h03,8'h01,8'h01,8'h02}	//Row 3
-		};
-
+	logic [7:0]aes_matrix[3:0][3:0];
+	
+	always_comb begin
+		aes_matrix[0][0] = 8'h02;aes_matrix[0][1] = 8'h03;aes_matrix[0][2] = 8'h01;aes_matrix[0][3] = 8'h01;
+		aes_matrix[1][0] = 8'h01;aes_matrix[1][1] = 8'h02;aes_matrix[1][2] = 8'h03;aes_matrix[1][3] = 8'h01;
+		aes_matrix[2][0] = 8'h01;aes_matrix[2][1] = 8'h01;aes_matrix[2][2] = 8'h02;aes_matrix[2][3] = 8'h03;
+		aes_matrix[3][0] = 8'h03;aes_matrix[3][1] = 8'h01;aes_matrix[3][2] = 8'h01;aes_matrix[3][3] = 8'h02;
+	end
 	//Variable for replicating hardware units
 	genvar row,col,k;
 	//Unpack the input matrix
@@ -55,8 +55,8 @@ module MixColumns(input logic [127:0]i_data,output logic [127:0]o_data);
 	
 	//Packing into matrix
 	always_comb begin
-        for ( c = 0; c < 4; c = c + 1) begin
-            for ( r = 0; r < 4; r = r + 1) begin
+        for (int c = 0; c < 4; c = c + 1) begin
+            for (int r = 0; r < 4; r = r + 1) begin
                 o_data[((c * 4) + r) * 8 +: 8] = o_result[r][c];
             end
         end
